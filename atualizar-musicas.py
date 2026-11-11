@@ -6,8 +6,10 @@ import os, json
 base = os.path.dirname(os.path.abspath(__file__))
 pasta = os.path.join(base, 'music')
 ext = ('.mp3', '.ogg', '.wav', '.m4a', '.aac', '.flac', '.opus', '.webm')
+import re
+nat = lambda t: [int(x) if x.isdigit() else x.lower() for x in re.split(r'(\d+)', t)]
 itens = []
-for nome in sorted(os.listdir(pasta), key=str.lower):
+for nome in sorted(os.listdir(pasta), key=nat):
     if nome.lower().endswith(ext):
         stem = os.path.splitext(nome)[0]
         titulo = ''
@@ -16,7 +18,7 @@ for nome in sorted(os.listdir(pasta), key=str.lower):
             txt = open(t, encoding='utf-8').read().strip()
             titulo = txt.splitlines()[0] if txt else ''
         if not titulo:
-            titulo = 'Route 24 (Pokémon Remix) — Ramstar' if stem.lower() == 'route24' else stem.replace('_', ' ').replace('-', ' ').strip()
+            titulo = re.sub(r'^\d+[\s._-]+', '', stem).replace('_', ' ').strip() or stem
         itens.append({'f': 'music/' + nome, 'n': titulo})
 cab = open(os.path.join(pasta, 'playlist.js'), encoding='utf-8').read().split('const MUSIC_LIST')[0]
 linhas = ',\n'.join(' {f:%s,n:%s}' % (json.dumps(i['f'], ensure_ascii=False), json.dumps(i['n'], ensure_ascii=False)) for i in itens)
@@ -27,7 +29,7 @@ print('%d música(s) na lista.' % len(itens))
 pw = os.path.join(base, 'wallpapers')
 os.makedirs(pw, exist_ok=True)
 iext = ('.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.bmp')
-imgs = sorted([n for n in os.listdir(pw) if n.lower().endswith(iext)], key=str.lower)
+imgs = sorted([n for n in os.listdir(pw) if n.lower().endswith(iext)], key=nat)
 arq = os.path.join(pw, 'lista.js')
 cab = open(arq, encoding='utf-8').read().split('const BG_LIST')[0] if os.path.exists(arq) else ''
 linhas = ',\n'.join(' ' + json.dumps('wallpapers/' + n, ensure_ascii=False) for n in imgs)

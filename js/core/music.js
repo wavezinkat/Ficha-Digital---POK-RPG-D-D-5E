@@ -5,15 +5,15 @@ const MEXT=/\.(mp3|ogg|oga|wav|m4a|aac|flac|opus|webm)$/i;
 let MU={track:'',mode:'one',bg:1};try{Object.assign(MU,JSON.parse(localStorage.getItem('pokeRpgMusic')))}catch(e){}
 const saveMu=()=>{try{localStorage.setItem('pokeRpgMusic',JSON.stringify(MU))}catch(e){}};
 const MUSIC=(typeof MUSIC_LIST!='undefined'&&Array.isArray(MUSIC_LIST)?MUSIC_LIST:[]).map(t=>({f:t.f,n:t.n||musicName(t.f)}));
-if(!MUSIC.length)MUSIC.push({f:'music/route24.mp3',n:'Route 24 (Pokémon Remix) — Ramstar'});
+if(!MUSIC.length)MUSIC.push({f:'music/01-Padr_o.mp3',n:'Padrão'});
 /* papéis de parede: wallpapers/lista.js (BG_LIST) + pasta detectada. A 1ª imagem acompanha a 2ª música, a 2ª a 3ª...
-   (a música padrão route24 não conta e usa o fundo normal do site) */
+   (a música padrão — a 1ª da lista — não conta e usa o fundo normal do site) */
 const IEXT=/\.(jpe?g|png|webp|gif|avif|bmp)$/i,BGS=(typeof BG_LIST!='undefined'&&Array.isArray(BG_LIST)?BG_LIST:[]).slice();
-const muDef=()=>{const i=MUSIC.findIndex(t=>/(^|\/)route24\.[a-z0-9]+$/i.test(t.f));return i<0?0:i};
+const muDef=()=>0;/* a música padrão é sempre a 1ª da lista e não tem papel de parede próprio */
 function muBgFor(f){const i=MUSIC.findIndex(t=>t.f==f),d=muDef();return i<0||i==d?'':(BGS[i<d?i:i-1]||'')}
 let BGL=[document.createElement('div'),document.createElement('div')],BGI=0,BGC='';BGL.forEach(e=>{e.className='bgl';document.body.prepend(e)});
 function muBg(){const u=(MU.bg&&!(typeof charData!='undefined'&&charData.bg))?muBgFor(MU.track):'';if(u==BGC)return;BGC=u;
- const a=BGL[BGI],b=BGL[1-BGI];if(u){b.style.backgroundImage=`linear-gradient(#0a14288c,#0a14288c),url("${encodeURI(u)}")`;b.classList.add('on');a.classList.remove('on');BGI=1-BGI}else{a.classList.remove('on');b.classList.remove('on')}}
+ const a=BGL[BGI],b=BGL[1-BGI];if(u){b.style.backgroundImage=`linear-gradient(#0a142838,#0a142838),url("${encodeURI(u)}")`;b.classList.add('on');a.classList.remove('on');BGI=1-BGI}else{a.classList.remove('on');b.classList.remove('on')}}
 function musicName(f){let n=decodeURIComponent(String(f).split('/').pop()).replace(MEXT,'').replace(/[_]+/g,' ').trim();return n||f}
 const muIdx=()=>Math.max(0,MUSIC.findIndex(t=>t.f==MU.track));
 function muSet(i,play){const t=MUSIC[(i+MUSIC.length)%MUSIC.length];MU.track=t.f;saveMu();muBg();bgm.src=t.f;bgm.loop=MU.mode=='one';if(play!==false&&AU.m)bgm.play().catch(()=>{});muDraw()}
@@ -32,7 +32,7 @@ function muDraw(){const e=document.getElementById('au-pl');if(!e)return;
  e.innerHTML=`<div class="mup"><label>Música:</label><div class="murow"><button class="btn sm" onclick="muNext(-1)" title="Anterior"><i class="fas fa-backward-step"></i></button><select id="mu-sel">${MUSIC.map((t,i)=>`<option value="${i}" ${t.f==MU.track?'selected':''}>${esc(t.n)}</option>`).join('')}</select><button class="btn sm" onclick="muNext(1)" title="Próxima"><i class="fas fa-forward-step"></i></button></div>
  <label>Ao terminar:</label><select id="mu-mode"><option value="one" ${MU.mode=='one'?'selected':''}>Repetir esta música</option><option value="seq" ${MU.mode=='seq'?'selected':''}>Tocar a lista em sequência</option><option value="shuffle" ${MU.mode=='shuffle'?'selected':''}>Aleatório</option></select>
  <label class="mubg"><input type="checkbox" id="mu-bg" ${MU.bg?'checked':''}> Trocar o papel de parede junto com a música</label>
- <p class="note">${MUSIC.length} música(s) e ${BGS.length} papel(éis) de parede. Para adicionar mais, coloque as músicas na pasta <b>music</b> e os papéis de parede na pasta <b>wallpapers</b> (a 1ª imagem acompanha a 2ª música, a 2ª imagem a 3ª... em ordem de nome; a música padrão não tem papel próprio) e atualize a página (se não aparecerem, dê dois cliques em <b>atualizar-musicas.bat</b>). <button class="btn sm" onclick="muScan()"><i class="fas fa-rotate"></i> Procurar músicas</button></p></div>`;
+ <p class="note">${MUSIC.length} música(s) e ${BGS.length} papel(éis) de parede. Para adicionar mais, coloque as músicas na pasta <b>music</b> e os papéis de parede na pasta <b>wallpapers</b> (a 1ª imagem acompanha a 2ª música, a 2ª imagem a 3ª... em ordem de nome; a música padrão, a 1ª da lista, não tem papel próprio) e atualize a página (se não aparecerem, dê dois cliques em <b>atualizar-musicas.bat</b>). <button class="btn sm" onclick="muScan()"><i class="fas fa-rotate"></i> Procurar músicas</button></p></div>`;
  e.querySelector('#mu-sel').onchange=ev=>muSet(+ev.target.value);e.querySelector('#mu-bg').onchange=ev=>{MU.bg=+ev.target.checked;saveMu();BGC='\0';muBg()};e.querySelector('#mu-mode').onchange=ev=>{MU.mode=ev.target.value;saveMu();bgm.loop=MU.mode=='one'}}
 {const f=initBoxes;initBoxes=function(){const r=f.apply(this,arguments);muDraw();muScan();return r}}
 {const f=updateBackground;updateBackground=function(){const r=f.apply(this,arguments);muBg();return r}}

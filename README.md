@@ -23,7 +23,7 @@ Os scripts são clássicos (sem `import`/`export`) e compartilham o escopo globa
 **A ordem das tags `<script>` em `index.html` é a ordem original do código e não deve ser alterada**: vários arquivos
 redefinem ou envolvem funções criadas em arquivos anteriores (ex.: `renderLists`, `openTab`, `loadJSON`).
 
-O arquivo `route24.mp3` (música de fundo) deve ficar ao lado de `index.html`; ele não estava no pacote recebido.
+As músicas ficam na pasta `music/` (veja a seção Pokédex e músicas).
 
 
 ## Reformulação do front-end
@@ -52,3 +52,4 @@ O arquivo `route24.mp3` (música de fundo) deve ficar ao lado de `index.html`; e
 - **Pokédex** (`js/features/pokedex.js`): primeira aba da dock; não aparece no perfil Selvagem. Dados em `charData.dex = {seen, got}` (entra no salvar rápido, biblioteca e JSON). Toda espécie na party/PC conta como capturada automaticamente; clique = visto → capturado → desmarcar. Filtros: região, tipos (vários; OU/E), vistos/capturados/não vistos e busca; botões em lote valem para o filtro atual. Número nacional = chave (formas usam a espécie base); homebrews entram em "Outros".
 - **Músicas** (`js/core/music.js`, pasta `music/`): coloque arquivos .mp3/.ogg/.wav/.m4a/.flac/.opus em `music/`. Servidores que listam a pasta (Live Server, `python -m http.server`) são detectados sozinhos; nos demais rode `atualizar-musicas.bat` (Windows) ou `python atualizar-musicas.py`, que reescreve `music/playlist.js`. Para dar um nome à faixa, crie `nome-do-arquivo.txt` com o título. Escolha da faixa e modo (repetir / sequência / aleatório) ficam no Configurar e são lembrados no navegador (`pokeRpgMusic`).
 - **Papel de parede por música** (`js/core/music.js`, pasta `wallpapers/`): a 1ª imagem (ordem alfabética) acompanha a 2ª música da lista, a 2ª imagem a 3ª etc.; a música padrão (route24) não conta e usa o fundo normal. Troca com fade; se o treinador tiver um fundo próprio (URL em Configurar) ele tem prioridade; há uma caixa para desligar no Configurar. Lista em `wallpapers/lista.js` (gerada por `atualizar-musicas.bat/.py` ou detectada em servidores que listam a pasta).
+- **Vercel / hospedagem sem listagem de pasta**: o navegador não consegue listar pastas, então a lista vem de `music/playlist.js` e `wallpapers/lista.js`. O `vercel.json` manda a Vercel rodar `node atualizar-musicas.js` a cada deploy (atualiza as duas listas sozinho). Localmente use `atualizar-musicas.bat` (chama o `.ps1`), `python atualizar-musicas.py` ou `node atualizar-musicas.js`. A música padrão agora é a 1ª da lista (sem papel de parede); as seguintes ganham as imagens na ordem.
