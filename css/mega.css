@@ -1,0 +1,17 @@
+/* css/mega.css — Mega evolução */
+/* ===== mega evolução ===== */
+.ibmg{width:22px;height:22px;flex:none;border:2px solid #4a4a4a;border-radius:6px;background:linear-gradient(135deg,#ff3d6a,#ffcb05,#3dff8b,#3dd0ff,#8a3dff);color:#fff;font-size:11px;padding:0;cursor:pointer;animation:mgpulse 1.6s ease-in-out infinite}.ibmg.rev{background:#666;animation:none}.ibmg:hover{filter:brightness(1.25)}
+@keyframes mgpulse{50%{box-shadow:0 0 10px 3px #c9a0ff}}.mgbadge{display:inline-block;background:linear-gradient(135deg,#ff3d6a,#8a3dff);color:#fff;font-size:8px;padding:1px 4px;border-radius:4px;vertical-align:middle}
+.mgpv{display:flex;align-items:center;gap:12px;font-size:18px;margin-bottom:6px}.mgpv .ps{width:64px;height:64px}.mgpv i{color:var(--gold)}
+#mgv{background:radial-gradient(circle at 50% 50%,#1b1236 0,#05060d 72%);cursor:pointer}
+.mgst{position:relative;width:min(560px,92vw);height:min(560px,82vh);display:grid;place-items:center;overflow:visible}
+.mga,.mgb{position:absolute;max-width:72%;max-height:72%;object-fit:contain}.mgb{opacity:0}
+.mgaura{position:absolute;inset:6%;border-radius:50%;background:conic-gradient(#ff3d6a,#ffcb05,#3dff8b,#3dd0ff,#8a3dff,#ff3d6a);filter:blur(30px);opacity:0;animation:mgaura 2s ease-in forwards}
+@keyframes mgaura{0%{opacity:0;transform:scale(.3) rotate(0)}60%{opacity:.85;transform:scale(1) rotate(180deg)}100%{opacity:.95;transform:scale(1.25) rotate(360deg)}}
+.mga{animation:mgglow 1.5s ease-in forwards}@keyframes mgglow{0%{filter:brightness(1)}70%{filter:brightness(1.7) saturate(1.6)}100%{filter:brightness(6) saturate(0);transform:scale(1.15)}}
+#mgv.p2 .mga{animation:mgout .5s forwards}@keyframes mgout{to{opacity:0;transform:scale(1.5);filter:brightness(12)}}
+.mgflash{position:absolute;inset:-30%;background:#fff;opacity:0;pointer-events:none}#mgv.p2 .mgflash{animation:mgflash .7s ease-out}@keyframes mgflash{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+#mgv.p3 .mgb{animation:mgpop 1.3s ease-out forwards}@keyframes mgpop{0%{opacity:1;transform:scale(.45);filter:brightness(9)}55%{opacity:1;transform:scale(1.2);filter:brightness(2.4)}100%{opacity:1;transform:scale(1);filter:brightness(1)}}
+#mgv.p3 .mgaura{animation:none;opacity:.55;transform:scale(1.15)}
+.mgsp i{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#fff;box-shadow:0 0 14px 4px #9bf;transform:rotate(var(--a)) translateY(-190px);animation:mgorb 1.6s linear infinite}@keyframes mgorb{to{transform:rotate(calc(var(--a) + 360deg)) translateY(-60px);opacity:0}}
+.mgtx{position:absolute;bottom:0;width:100%;text-align:center;font:700 20px Outfit,sans-serif;color:#fff;text-shadow:0 0 14px #8a3dff}.mgtx small{display:block;font:500 13px Outfit,sans-serif;color:#d8c8ff;margin-top:4px}

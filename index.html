@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokeRPG — Ficha de Treinador</title>
+<link rel="icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/theme-glass.css">
+<link rel="stylesheet" href="css/inventory.css">
+<link rel="stylesheet" href="css/pokemon.css">
+<link rel="stylesheet" href="css/pokemon-sheet.css">
+<link rel="stylesheet" href="css/party.css">
+<link rel="stylesheet" href="css/master.css">
+<link rel="stylesheet" href="css/traits.css">
+<link rel="stylesheet" href="css/status-bar.css">
+<link rel="stylesheet" href="css/combat.css">
+<link rel="stylesheet" href="css/combat-multi.css">
+<link rel="stylesheet" href="css/mega.css">
+<link rel="stylesheet" href="css/theme-pokemon.css">
+</head><body>
+<script src="js/data/pokedex-data.js"></script>
+
+    <section id="tab-main" class="win hide"><header class="bar"><i class="fas fa-id-card"></i><b>Principal</b><button onclick="closeTab('tab-main')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        
+        <div class="grid-2">
+            <div>
+                <img src="" id="char-avatar-preview" class="avatar-img" alt="Avatar" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png'">
+                <div class="input-group">
+                    <label><i class="fas fa-image"></i> URL da Imagem do Personagem:</label>
+                    <input type="text" id="char-img" placeholder="https://link-da-imagem.com/img.jpg" onchange="updateCharImage()">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-signature"></i> Nome do Personagem:</label>
+                    <input type="text" id="char-name">
+                </div>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label><i class="fas fa-dna"></i> Raça:</label>
+                        <input type="text" value="Humano" readonly style="background:#e9ecef; color: #6c757d; cursor: not-allowed;">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-road"></i> Caminho (Classe):</label>
+                        <select id="char-path"></select>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 20px;">
+                    <h4><i class="fas fa-star" style="color: #ffcb05;"></i> Especializações</h4>
+                    <p style="font-size: 0.85em; color: #666; margin-bottom: 15px;">Marque as que você possui.</p>
+                    <div class="scroll-box">
+                        <ul class="spec-list" id="specs-container"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fas fa-heartbeat"></i> Status Rápidos</h3>
+                    <div class="input-group">
+                        <label>HP Atual / Máximo:</label>
+                        <input type="text" id="char-hp" placeholder="Ex: 25 / 30">
+                    </div>
+                    <div class="input-group">
+                        <label>Poke Coins (₽):</label>
+                        <input type="number" id="char-coins" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Inspiração:</label>
+                        <input type="number" id="char-inspiration" value="0">
+                    </div>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-shield-alt"></i> Combate</h3>
+                    <div class="input-group">
+                        <label>Classe de Armadura (CA):</label>
+                        <input type="number" id="char-ac" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Movimentação (m/ft):</label>
+                        <input type="text" id="char-speed" value="9m">
+                    </div>
+                    <div class="input-group">
+                        <label>MAX CR (Limite Captura):</label>
+                        <input type="number" id="char-maxcr" value="1" step="0.25">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-top:40px;">Atributos e Perícias</h2><div id="saves" class="note"></div>
+        <div class="grid-2">
+            <div class="grid-3" id="attributes-container"></div>
+            <div class="card">
+                <h4><i class="fas fa-tasks"></i> Perícias (1.4.1 / 5e)</h4>
+                <ul class="prof-list" id="skills-container"></ul>
+            </div>
+        </div>
+    </div></section>
+
+    <section id="tab-trainer" class="win hide"><header class="bar"><i class="fas fa-route"></i><b>Seu Treinador</b><button onclick="closeTab('tab-trainer')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        
+        <p><em>As habilidades abaixo são liberadas automaticamente de acordo com as escolhas na aba Principal e o seu Nível de Treinador.</em></p>
+        <div id="trainer-features-list"></div>
+        
+        <h3><i class="fas fa-bolt"></i> Talentos e Habilidades Extras</h3>
+        <p><em>Adicione aqui talentos extras, dons recebidos ou habilidades únicas que seu treinador conquistou na jornada.</em></p>
+        
+        <div class="tlbar"><button class="btn" onclick="tlOpen(-1)"><i class="fas fa-plus"></i> Adicionar talento</button></div>
+        <div class="dynamic-list" id="talent-list"></div>
+
+    </div></section>
+
+    <section id="tab-pokemon" class="win hide"><header class="bar"><i class="fas fa-paw"></i><b>Pokémons</b><button onclick="closeTab('tab-pokemon')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        
+        <p><em>Nota: Seu nível de treinador é calculado com base na <b>SOMA</b> dos níveis dos Pokémons Principais marcados com a estrela (<i class="fas fa-star" style="color: #ffcb05;"></i>)!<br>
+        Limite de Principais na Party: Nv 1-4 (<b>3</b>) | Nv 5-9 (<b>4</b>) | Nv 10-14 (<b>5</b>) | Nv 15-20 (<b>6</b>)</em></p>
+        <div class="card" style="margin-bottom: 25px;">
+            <div class="grid-4">
+                <input type="text" id="new-poke-name" placeholder="Nome/Espécie">
+                <input type="number" id="new-poke-lvl" placeholder="Nível" min="1" max="100">
+                <input type="text" id="new-poke-img" placeholder="URL da Imagem">
+                <button class="btn btn-success" onclick="addPokemon()"><i class="fas fa-plus"></i> Salvar</button>
+            </div>
+        </div>
+        <div class="dynamic-list" id="pokemon-list"></div>
+    </div></section>
+
+    
+
+    <section id="tab-inventory" class="win hide"><header class="bar"><i class="fas fa-bag-shopping"></i><b>Inventário</b><button onclick="closeTab('tab-inventory')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        <div class="card" style="margin-bottom: 25px;">
+            <div class="grid-2">
+                <input type="text" id="new-inv-name" placeholder="Nome do Item (Ex: Potion)">
+                <input type="number" id="new-inv-qtd" placeholder="Quantidade" value="1">
+                <input type="text" id="new-inv-img" placeholder="URL da Imagem">
+                <input type="text" id="new-inv-desc" placeholder="Breve descrição">
+            </div>
+            <button class="btn btn-success" onclick="addInventory()" style="width: 100%; margin-top: 15px;"><i class="fas fa-backpack"></i> Guardar Item</button>
+        </div>
+        <div class="dynamic-list" id="inventory-list"></div>
+    </div></section>
+
+    <section id="tab-traits" class="win hide"><header class="bar"><i class="fas fa-masks-theater"></i><b>Traços</b><button onclick="closeTab('tab-traits')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        <div class="card" style="margin-bottom: 25px;">
+            <div class="input-group">
+                <label><i class="fas fa-scroll"></i> História:</label>
+                <textarea id="char-history" rows="8" placeholder="Escreva a história épica da sua jornada..."></textarea>
+            </div>
+        </div>
+        <div class="card">
+            <div class="input-group">
+                <label><i class="fas fa-theater-masks"></i> Personalidade (Ideais, Laços e Defeitos):</label>
+                <textarea id="char-personality" rows="6" placeholder="Descreva a personalidade do seu treinador..."></textarea>
+            </div>
+        </div>
+    </div></section>
+
+    <section id="tab-save" class="win hide"><header class="bar"><i class="fas fa-gear"></i><b>Configurar</b><button onclick="closeTab('tab-save')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb">
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3><i class="fas fa-paint-brush"></i> Personalização Visual</h3>
+                <div class="input-group">
+                    <label>URL da Imagem de Fundo (Background):</label>
+                    <input type="text" id="bg-url" placeholder="https://..." onchange="updateBackground()">
+                    <small style="color:#666; display:block; margin-top:5px;">Deixe em branco para usar o fundo da aventura padrão.</small>
+                </div>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-database"></i> Computador do Bill (Dados)</h3>
+                <button class="btn btn-success" onclick="saveToCache()" style="width:100%; margin-bottom:10px;"><i class="fas fa-save"></i> Salvar no Navegador</button>
+                <button class="btn btn-danger" onclick="loadFromCache()" style="width:100%; margin-bottom:20px;"><i class="fas fa-sync-alt"></i> Carregar do Navegador</button>
+                
+                <hr style="border:1px solid rgba(0,0,0,0.1); margin-bottom:20px;">
+                
+                <button class="btn" onclick="downloadJSON()" style="width:100%; margin-bottom:10px;"><i class="fas fa-download"></i> Baixar Ficha (JSON)</button>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label><i class="fas fa-upload"></i> Carregar Ficha (JSON):</label>
+                    <input type="file" id="file-upload" accept=".json" onchange="loadJSON(event)" style="padding: 8px;">
+                </div>
+            </div>
+        </div>
+    </div></section>
+<section id="tab-combat" class="win hide"><header class="bar"><i class="fas fa-khanda"></i><b>Combate</b><button onclick="closeTab('tab-combat')" title="Fechar"><i class="fas fa-xmark"></i></button></header><div class="wb"></div></section><div id="legacy" style="display:none">
+        <h2>Insígnias e Conquistas</h2>
+        <div class="card" style="margin-bottom: 25px;">
+            <div class="grid-3">
+                <input type="text" id="new-ach-name" placeholder="Nome da Insígnia">
+                <input type="text" id="new-ach-img" placeholder="URL da Imagem">
+                <button class="btn btn-success" onclick="addAchievement()"><i class="fas fa-medal"></i> Salvar</button>
+            </div>
+        </div>
+        <div class="dynamic-list" id="achievement-list"></div>
+    </div>
+<header id="hdr">
+<div id="top"><button class="logo" id="logo" onclick="goHome()" title="Voltar ao início"><i class="fas fa-circle-dot"></i> POKERPG</button>
+<button class="tbn dicebtn" id="dicebtn" onclick="diceToggle()" title="Bandeja de dados"><i class="fas fa-dice-d20"></i></button>
+<span class="grow"></span>
+<button class="tbn" onclick="saveToCache();sfx('ok')" title="Salvar no navegador"><i class="fas fa-floppy-disk"></i><span>Salvar rápido</span></button>
+<button class="tbn" onclick="quickLoadOpen()" title="Carregar do navegador"><i class="fas fa-folder-open"></i><span>Carregar rápido</span></button>
+<button id="chip" onclick="openTab('tab-main')" title="Abrir ficha"><img id="chip-img" alt="Treinador"><span><b id="chip-name"></b><small id="chip-info"></small></span></button>
+</div>
+<div id="statbar"><span id="level-badge">Nv <b id="display-trainer-level">1</b> · Prof +<b id="display-prof-bonus">2</b></span><button id="tlup" onclick="trainerLvlDlg()" title="Subir nível do treinador"><i class="fas fa-arrow-up"></i></button></div>
+</header>
+<aside id="rail"><nav id="dock"></nav></aside>
+<div id="start" class="ov"><div class="hero"><div class="ball"></div><h1>POKERPG</h1><p>Ficha de treinador · Pokémon 5e</p>
+<div class="row"><button class="big" onclick="wizOpen()"><i class="fas fa-plus"></i> Novo treinador</button><button class="big dice" title="Treinador aleatório" onclick="diceAsk()"><i class="fas fa-dice-d20"></i></button></div>
+<div class="row"><button class="big alt" onclick="libOpen()"><i class="fas fa-folder-open"></i> Treinador existente</button></div><div class="row"><button class="big gm" onclick="masterEntry()"><i class="fas fa-crown"></i> Entrar como Mestre</button></div><div class="party"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif" alt="" onerror="this.remove()"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/6.gif" alt="" onerror="this.remove()"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/3.gif" alt="" onerror="this.remove()"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/9.gif" alt="" onerror="this.remove()"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/94.gif" alt="" onerror="this.remove()"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/143.gif" alt="" onerror="this.remove()"></div></div></div></div>
+<div id="wiz" class="ov hide"></div><div id="dlg" class="ov hide"></div><div id="toast"></div>
+<script src="js/data/trainer-data.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/trainer/ui-init.js"></script>
+<script src="js/trainer/party-limit.js"></script>
+<script src="js/trainer/calculations.js"></script>
+<script src="js/trainer/trainer-tab.js"></script>
+<script src="js/trainer/lists.js"></script>
+<script src="js/trainer/visuals.js"></script>
+<script src="js/trainer/save-load.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="music/playlist.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/ui/windows.js"></script>
+<script src="js/ui/boxes.js"></script>
+<script src="js/core/music.js"></script>
+<script src="js/data/inventory-data.js"></script>
+<script src="js/features/inventory.js"></script>
+<script src="js/features/pokemon/core.js"></script>
+<script src="js/features/type-colors.js"></script>
+<script src="js/features/type-chart.js"></script>
+<script src="js/features/pokemon/creation.js"></script>
+<script src="js/features/pokemon/party-list.js"></script>
+<script src="js/features/pokemon/catalog.js"></script>
+<script src="js/features/pokemon/sheet.js"></script>
+<script src="js/features/pokemon/level-evolution.js"></script>
+<script src="js/features/pokemon/manual-form.js"></script>
+<script src="js/features/pokemon/images-rolls.js"></script>
+<script src="js/features/pokemon/compact-sheet.js"></script>
+<script src="js/features/trainer-level.js"></script>
+<script src="js/features/pokemon/abilities-share.js"></script>
+<script src="js/features/pokemon/custom-move.js"></script>
+<script src="js/features/traits.js"></script>
+<script src="js/ui/tooltip.js"></script>
+<script src="js/features/trainer-image.js"></script>
+<script src="js/data/trainer-uses-data.js"></script>
+<script src="js/data/talent-presets.js"></script>
+<script src="js/features/stats-bar.js"></script>
+<script src="js/features/ability-uses.js"></script>
+<script src="js/features/chip.js"></script>
+<script src="js/core/boot.js"></script>
+<script src="js/wizard/rules.js"></script>
+<script src="js/wizard/wizard.js"></script>
+<script src="js/wizard/random-trainer.js"></script>
+<script src="js/core/startup.js"></script>
+<script src="js/master/profile.js"></script>
+<script src="js/master/session.js"></script>
+<script src="js/master/trainers.js"></script>
+<script src="js/master/sidebar.js"></script>
+<script src="js/master/wild-pokemon.js"></script>
+<script src="js/master/wild-window.js"></script>
+<script src="js/features/pokedex.js"></script>
+<script src="js/master/save-load.js"></script>
+<script src="js/core/library.js"></script>
+<script src="js/combat/core.js"></script>
+<script src="js/combat/buff-engine.js"></script>
+<script src="js/combat/sypher-stone.js"></script>
+<script src="js/combat/rolls.js"></script>
+<script src="js/combat/results.js"></script>
+<script src="js/combat/hp-status.js"></script>
+<script src="js/combat/battle-screen.js"></script>
+<script src="js/combat/dialogs.js"></script>
+<script src="js/combat/path-actions.js"></script>
+<script src="js/combat/path-extra.js"></script>
+<script src="js/combat/talents.js"></script>
+<script src="js/features/talent-modal.js"></script>
+<script src="js/combat/mega-evolution.js"></script>
+<script src="js/combat/init.js"></script>
+<script src="js/ui/dice-tray.js"></script>
+</body></html>

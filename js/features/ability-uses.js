@@ -1,0 +1,33 @@
+// js/features/ability-uses.js — Usos de habilidades e descansos
+/* ---- usos de habilidades do treinador ---- */
+const rVis=()=>{const o=[],lv=trainerLevel,P=charData.path;if(charData.isWild)return o;RCMB.forEach(x=>{if(x.w=='s'?(charData.specs||{})[x.p]:((P==x.p||x.p=='*')&&lv>=x.l))o.push({k:'a:'+x.n,n:x.n,a:x.a||'',r:x.r||'',max:x.m?x.m():0,pool:x.pool,cost:x.cost||1,t:x.t,nc:x.nc,q:x.q,cmb:x.cmb})});const mf=mfRow();if(mf&&!o.some(q=>q.n==mf.n))o.push(mf);return o};
+/* Muitas Faces (Versátil, nível 9): uma habilidade ativa de 2º, 5º ou 9º nível de outro caminho */
+const mfRow=()=>{const n=charData.mface,x=n&&!charData.isWild&&charData.path=='Versátil'&&trainerLevel>=9?RCMB.find(z=>z.n==n&&z.p!='Versátil'&&z.p!='*'&&z.l<=9&&!z.w):null;return x?{k:'a:'+x.n,n:x.n,a:x.a||'',r:x.r||'',max:x.m?x.m():0,pool:x.pool,cost:x.cost||1,t:x.t,nc:x.nc,q:x.q,cmb:x.cmb}:null};
+const rVisC=()=>rVis().filter(x=>!x.nc);/* só o que se usa em combate */
+const rVisU=()=>rVis().filter(x=>(x.max||x.pool)&&!x.cmb);/* lista de usos da aba Treinador */
+const rPools=()=>charData.isWild?[]:Object.keys(RPOOLS).filter(k=>(charData.path==RPOOLS[k].p&&trainerLevel>=RPOOLS[k].l)||(mfRow()||{}).pool==k);
+function usosNode(){const n=document.createElement('div');n.innerHTML='<div class="itb"><button class="btn alt" onclick="restShort()"><i class="fas fa-mug-hot"></i> Descanso curto</button><button class="btn" onclick="restDlg()"><i class="fas fa-moon"></i> Descanso longo</button></div><div id="usos"></div>';return n}
+function renderUsos(){const L=$('usos');if(!L)return;const sp=(charData.uses=charData.uses||{});
+ const ab=rVisU(),pl=rPools();
+ L.innerHTML=megaRow()+pl.map(k=>{const p=RPOOLS[k],u=sp['p:'+k]||0,m=p.m(),st=p.s||1;return`<div class="ur"><div class="um"><b>${esc(p.n)}</b>${badges(p.a)}<span class="ub r">${RRES[p.r]}</span></div><span class="cn"><button onclick="usoPool('${k}',${st})">−</button> ${m-u}/${m} <button onclick="usoPool('${k}',${-st})">+</button></span></div>`}).join('')+
+ ab.map((x,i)=>{const p=x.pool?RPOOLS[x.pool]:null,key=p?'p:'+x.pool:x.k,u=sp[key]||0,m=p?p.m():x.max,left=m-u,out=left<(p?x.cost:1);return`<div class="ur ${out?'out':''}"><div class="um"><b>${esc(x.n)}</b>${badges(x.a)}${x.r?`<span class="ub r">${RRES[x.r]}</span>`:''}${p?`<span class="ub c">custo ${x.cost}</span>`:''}</div>${p?'':`<span class="cn">${left}/${m}${x.t?' '+esc(x.t):''}</span>`}<button class="use" ${out?'disabled':''} onclick="usoUsar(${i})">${out?'Esgotado':'Usar'}</button><button class="ib" ${u?'':'disabled'} onclick="usoDesfazer(${i})" title="Desfazer um uso"><i class="fas fa-rotate-left"></i></button></div>`}).join('')||(pl.length?'':'<p class="note">Habilidades com usos limitados (por descanso) aparecem aqui conforme seu Caminho, nível e especializações.</p>')}
+function usoUsar(i){const x=rVisU()[i],sp=charData.uses=charData.uses||{},p=x.pool?RPOOLS[x.pool]:null,key=p?'p:'+x.pool:x.k,m=p?p.m():x.max,u=sp[key]||0,c=p?x.cost:1;if(u+c>m)return toast(p?`Sem ${p.n} suficientes.`:`${x.n} esgotado — recupera no descanso.`);sp[key]=u+c;sfx('ok');toast(`${x.n} usado.`);renderUsos()}
+function usoDesfazer(i){const x=rVisU()[i],sp=charData.uses||{},p=x.pool?RPOOLS[x.pool]:null,key=p?'p:'+x.pool:x.k,c=p?x.cost:1;sp[key]=Math.max(0,(sp[key]||0)-c);sfx('click');renderUsos()}
+function usoPool(k,d){const sp=charData.uses=charData.uses||{},m=RPOOLS[k].m();sp['p:'+k]=Math.max(0,Math.min(m,(sp['p:'+k]||0)+d));sfx('click');renderUsos()}
+function rRestOf(k){const id=k.slice(2);if(k[0]=='a'){const x=RCMB.find(v=>v.n==id);return x&&x.r}return RPOOLS[id]&&RPOOLS[id].r}
+function restShort(){const sp=charData.uses||{};let n=0;if(trainerLevel>=17&&sp.mega>0){sp.mega--;n++}PKT().forEach(p=>{if(p.megaUsed){p.megaUsed=0;n++}});Object.keys(sp).forEach(k=>{if(rRestOf(k)=='curto'){delete sp[k];n++}});sfx('ok');toast(n?'Descanso curto: habilidades de descanso curto recarregadas.':'Descanso curto: nada para recarregar.');renderUsos()}
+
+/* ---- descanso longo ---- */
+function restDlg(){const ps=(charData.pokemons||[]).length,ck=(id,t)=>`<label class="ck"><input type="checkbox" id="${id}" checked> ${t}</label>`;
+ $('pkd').innerHTML=`<div class="wc" style="width:min(480px,94vw)"><div class="steps"><b style="flex:1;color:#fff;padding:6px 8px"><i class="fas fa-moon"></i> Descanso longo — ${esc(charData.name||'treinador')}</b><button class="st" style="flex:none" onclick="show('pkd',0)"><i class="fas fa-xmark"></i></button></div><div class="wbody"><p class="note">Restaura tudo o que foi gasto, menos consumíveis (itens da mochila não são devolvidos).</p>${ck('rs-hp','PV do treinador')}${ck('rs-us','Usos de habilidades e reservas do treinador')}${ck('rs-pp',`PP dos golpes de todos os Pokémon (${ps})`)}${ck('rs-php','PV dos Pokémon (inclui desmaiados)')}${ck('rs-pst','Status dos Pokémon (veneno, paralisia, sono...)')}</div><div class="wnav"><button class="btn alt" onclick="show('pkd',0)">Cancelar</button><button class="btn" onclick="longRest()"><i class="fas fa-bed"></i> Descansar</button></div></div>`;show('pkd',1);sfx('open')}
+function longRest(){const on=id=>$(id).checked,log=[];
+ if(on('rs-hp')){const m=String(charData.hp||'').match(/(\d+)\s*\/\s*(\d+)/);if(m){charData.hp=`${m[2]} / ${m[2]}`;if($('char-hp'))$('char-hp').value=charData.hp;log.push('PV')}}
+ if(on('rs-us')){const n=Object.keys(charData.uses||{}).length;charData.uses={};log.push('habilidades'+(n?` (${n})`:''))}
+ const a=PKT();let pp=0,hp=0,st=0;a.forEach(p=>{if(on('rs-us'))p.megaUsed=0;if(on('rs-pp'))p.mv.forEach(m=>{if(m.pp!=null){delete m.pp;pp++}});if(on('rs-php')&&p.hpCur<maxHp(p)){p.hpCur=maxHp(p);hp++}if(on('rs-pst')&&(p.st||(p.vol||[]).length)){p.st='';p.vol=[];st++}});
+ if(on('rs-pp'))log.push('PP');if(on('rs-php'))log.push(`PV de ${hp} Pokémon`);if(on('rs-pst')&&st)log.push(`status de ${st}`);
+ show('pkd',0);renderLists();statsRefresh();sfx('ok');toast(`Descanso longo concluído: ${log.join(', ')||'nada selecionado'}.`)}
+{const r=renderLists;renderLists=function(){r();renderUsos();statsRefresh()}}
+
+const megaRow=()=>{if(trainerLevel<13||charData.isWild)return'';const u=(charData.uses||{}).mega||0;return`<div class="ur"><div class="um"><b>Mega Evolução</b><span class="ub r">Desc. longo</span><small class="note" style="display:block">2 usos por descanso longo. No nível 17 você recupera 1 uso no descanso curto. Cada Pokémon Mega Evolui 1× por descanso (2× a partir do nível 15).</small></div><span class="cn"><button onclick="usoMega(1)">−</button> ${Math.max(0,2-u)}/2 <button onclick="usoMega(-1)">+</button></span></div>`};
+function usoMega(d){const sp=charData.uses=charData.uses||{};sp.mega=Math.max(0,Math.min(2,(sp.mega||0)+d));sfx('click');renderUsos()}
+

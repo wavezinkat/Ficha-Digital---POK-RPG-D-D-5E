@@ -1,0 +1,6 @@
+/* css/party.css — Party, PC e nível do treinador */
+/* ===== party / pc / nível do treinador ===== */
+#tlup{pointer-events:auto;width:26px;height:26px;border:0;border-radius:8px;background:var(--red);color:#fff;font-size:12px}#tlup:hover{filter:brightness(1.2)}
+.pkzone{min-height:76px;border-radius:12px;transition:.15s}.pkzone.over{background:#ffcb0526;outline:2px dashed var(--gold)}
+.pkmini{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin-top:8px}
+.pc.mini{padding:5px 8px;gap:8px}.pc.mini .ps{width:46px;height:46px}.pc.mini .pa{flex-direction:row}.pc.mini .pa button{width:22px;height:22px;font-size:10px}.pc .ps{cursor:grab}

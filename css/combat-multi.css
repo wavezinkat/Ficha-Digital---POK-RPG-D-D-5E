@@ -1,0 +1,4 @@
+/* css/combat-multi.css — Combate com vários Pokémon */
+/* ===== combate com vários pokémon ===== */
+.bsps{position:absolute;left:3%;bottom:6%;width:52%;max-height:92%;display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;z-index:1}.bsp{position:relative;bottom:auto;left:auto;transform:none}.bsp.s0,.bsp.s1{left:auto}.bsp.sel{filter:drop-shadow(0 0 8px #ffcb05) drop-shadow(0 6px 4px #0006)}.bsp.sel.s0{animation:none}.bsp img{height:auto}
+.binfo{max-height:calc(100% - 10px);overflow:auto;padding-bottom:2px}.ibsw{width:22px;height:22px;flex:none;border:2px solid #4a4a4a;border-radius:6px;background:#eee;color:#444;font-size:10px;padding:0;cursor:pointer}.ibsw:hover{background:#e5a600;color:#fff}.ibx.sel .ibsw{background:#e5a600;color:#fff}

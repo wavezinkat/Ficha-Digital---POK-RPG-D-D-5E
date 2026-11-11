@@ -1,0 +1,5 @@
+Coloque aqui os papeis de parede (jpg, png, webp, gif, avif).
+A ordem e por nome de arquivo: 01-..., 02-..., 03-...
+A 1a imagem acompanha a 2a musica da pasta "music", a 2a imagem a 3a musica, etc.
+(a musica padrao route24 nao tem papel de parede proprio e usa o fundo normal do site).
+Depois de adicionar, atualize a pagina (se nao aparecer: de dois cliques em atualizar-musicas.bat).
