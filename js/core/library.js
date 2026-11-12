@@ -22,7 +22,7 @@ const libSorted=()=>libRead().sort((x,y)=>y.t-x.t);
 function libLoad(i){const e=libSorted()[i];if(!e)return;const live=$('start').classList.contains('hide')&&!MASTER;if(live&&!confirm('Carregar este treinador substitui a ficha aberta (alterações não salvas serão perdidas). Continuar?'))return;
  libClose();start(JSON.parse(JSON.stringify(e.d)));toast(`${e.n||'Treinador'} carregado!`)}
 function libDup(i){const a=libSorted(),e=a[i];if(!e)return;const c=JSON.parse(JSON.stringify(e));c.n=(e.n||'Treinador')+' (cópia)';c.d.name=c.n;c.t=Date.now();a.unshift(c);libWrite(a);libDraw();sfx('ok')}
-function libDl(i){const e=libSorted()[i];if(!e)return;const u=URL.createObjectURL(new Blob([JSON.stringify(e.d,null,2)],{type:'application/json'})),l=document.createElement('a');l.href=u;l.download=(e.n||'ficha')+'_pokerpg.json';l.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+function libDl(i){const e=libSorted()[i];if(!e)return;saveJSON(JSON.stringify(e.d,null,2),(e.n||'ficha')+'_pokerpg.json')}
 function libDel(i){const a=libSorted(),e=a[i];if(!e||!confirm(`Remover "${e.n}" da lista? (o arquivo .json, se existir, não é apagado)`))return;a.splice(i,1);libWrite(a);libDraw();sfx('del')}
 function libImport(e){const f=e.target.files[0];e.target.value='';if(!f)return;const r=new FileReader();r.onload=x=>{try{const d=JSON.parse(x.target.result);if(d&&d.format=='pokerpg-master'){libClose();enterMaster(d);return}
  libPut(d,f.lastModified||Date.now());libDraw();toast('Importado! Clique no treinador para abrir.')}catch(err){toast('Arquivo JSON inválido.')}};r.readAsText(f)}

@@ -15,6 +15,6 @@ const masterData=()=>({format:'pokerpg-master',version:1,name:MASTER.name,active
 function masterSaveNow(){try{localStorage.setItem(MKEY,JSON.stringify(masterData()));return true}catch(e){return false}}
 const masterAuto=()=>{clearTimeout(MT);MT=setTimeout(()=>{if(MASTER)masterSaveNow()},400)};
 setInterval(()=>{if(MASTER)masterSaveNow()},20000);
-function masterDownload(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(masterData(),null,1)],{type:'application/json'}));a.download=`mestre-${(MASTER.name||'mesa').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}_pokerpg.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);masterSaveNow();toast(`Perfil de mestre "${MASTER.name}" baixado (${MASTER.trainers.length} treinadores).`)}
-function masterExport(i){const t=MASTER.trainers[i],a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(t,null,2)],{type:'application/json'}));a.download=(t.name||'ficha')+'_pokerpg.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);toast(`Ficha de ${t.name||'treinador'} baixada.`)}
+function masterDownload(){saveJSON(JSON.stringify(masterData(),null,1),`mestre-${(MASTER.name||'mesa').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}_pokerpg.json`).then(ok=>{if(!ok)return;masterSaveNow();toast(`Perfil de mestre "${MASTER.name}" baixado (${MASTER.trainers.length} treinadores).`)})}
+function masterExport(i){const t=MASTER.trainers[i];saveJSON(JSON.stringify(t,null,2),(t.name||'ficha')+'_pokerpg.json').then(ok=>{if(ok)toast(`Ficha de ${t.name||'treinador'} baixada.`)})}
 

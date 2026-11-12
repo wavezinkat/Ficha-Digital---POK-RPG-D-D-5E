@@ -56,11 +56,7 @@
     }
 
     function downloadJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(charData, null, 2));
-        const dlAnchorElem = document.createElement('a');
-        dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", (charData.name || "ficha") + "_pokerpg.json");
-        dlAnchorElem.click();
+        saveJSON(JSON.stringify(charData, null, 2), (charData.name || "ficha") + "_pokerpg.json");
     }
 
     function loadJSON(event) {
