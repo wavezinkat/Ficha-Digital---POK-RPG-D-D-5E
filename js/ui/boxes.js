@@ -1,5 +1,6 @@
 // js/ui/boxes.js — Caixas móveis, redimensionáveis e minimizáveis
 /* caixas: móveis, redimensionáveis, minimizáveis */
+const MOBL=()=>document.documentElement.classList.contains('mob');/* celular: não grava tamanho/posição das caixas */
 function mkBox(d,custom){const s=custom?d:(LAY[d.id]=LAY[d.id]||{x:d.x,y:d.y,w:d.w,h:d.h,min:0}),el=document.createElement('div');
  el.id=d.id;el.className='box'+(d.cls?' '+d.cls:'')+(custom?' custom':'');
  el.innerHTML=`<div class="bx"><img class="bi" src="${IMG}items/${d.ic||'poke-ball'}.png" alt="" onerror="this.remove()"><b></b><button class="mn" title="Minimizar"><i class="fas fa-minus"></i></button>${custom?'<button class="dl" title="Apagar caixa"><i class="fas fa-trash"></i></button>':''}</div><div class="by"></div>`;
@@ -10,10 +11,10 @@ function mkBox(d,custom){const s=custom?d:(LAY[d.id]=LAY[d.id]||{x:d.x,y:d.y,w:d
  else d.nodes.forEach(n=>n&&by.appendChild(n));
  const ap=()=>{Object.assign(el.style,{left:s.x+'px',top:s.y+'px',width:s.w+'px',height:s.min?'':s.h+'px'});el.classList.toggle('min',!!s.min)};ap();
  bx.querySelector('.mn').onclick=()=>{s.min=s.min?0:1;ap();sfx('min');saveBoxes()};
- bx.addEventListener('pointerdown',e=>{el.style.zIndex=++BZ;if(e.target.closest('button')||t.isContentEditable)return;sfx('box');const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop,P=el.parentNode;
+ bx.addEventListener('pointerdown',e=>{if(MOBL())return;/* celular: caixas ficam empilhadas, sem arrastar */el.style.zIndex=++BZ;if(e.target.closest('button')||t.isContentEditable)return;sfx('box');const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop,P=el.parentNode;
   const mv=ev=>{s.x=Math.max(0,Math.min(P.clientWidth-70,ev.clientX-sx));s.y=Math.max(0,ev.clientY-sy);el.style.left=s.x+'px';el.style.top=s.y+'px'},up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);saveBoxes()};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);e.preventDefault()});
- new ResizeObserver(()=>{if(!s.min&&el.offsetWidth>0&&(Math.abs(el.offsetWidth-s.w)>1||Math.abs(el.offsetHeight-s.h)>1)){s.w=el.offsetWidth;s.h=el.offsetHeight;clearTimeout(BT);BT=setTimeout(saveBoxes,400)}}).observe(el);
+ new ResizeObserver(()=>{if(!MOBL()&&!s.min&&el.offsetWidth>0&&(Math.abs(el.offsetWidth-s.w)>1||Math.abs(el.offsetHeight-s.h)>1)){s.w=el.offsetWidth;s.h=el.offsetHeight;clearTimeout(BT);BT=setTimeout(saveBoxes,400)}}).observe(el);
  return el}
 function addBox(tab){charData.boxes=charData.boxes||{};const a=charData.boxes[tab]=charData.boxes[tab]||[],d={id:'c'+Date.now(),tab,t:'Nova caixa',txt:'',ic:pick(['poke-ball','great-ball','ultra-ball','premier-ball']),x:60+a.length*28,y:60+a.length*28,w:340,h:260,min:0};a.push(d);$(tab).querySelector('.board').appendChild(mkBox(d,true));sfx('ok')}
 function renderCustom(){document.querySelectorAll('.box.custom').forEach(e=>e.remove());charData.boxes=charData.boxes||{};WINS.forEach(([id])=>(charData.boxes[id]||[]).forEach(d=>{d.tab=id;$(id).querySelector('.board').appendChild(mkBox(d,true))}))}
