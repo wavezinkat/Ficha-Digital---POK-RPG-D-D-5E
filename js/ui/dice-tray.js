@@ -55,8 +55,8 @@ function dtBuild(){if($('dice'))return;const d=document.createElement('section')
  <details class="dts" ontoggle="if(this.open)$('dt-sheet').innerHTML=dtSheet()"><summary>Rolagens da ficha</summary><div id="dt-sheet"></div></details>
  <div class="dthh"><span>Histórico</span><button onclick="dtHistClear()">Limpar</button></div><div id="dt-hist"></div></div>`;
  document.body.appendChild(d);dtHistDraw();
- const hd=d.querySelector('.dth');hd.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;d.style.zIndex=9650;const sx=e.clientX-d.offsetLeft,sy=e.clientY-d.offsetTop;
-  const mv=ev=>dtPlace(ev.clientX-sx,ev.clientY-sy),up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);dtSave()};addEventListener('pointermove',mv);addEventListener('pointerup',up);e.preventDefault()});
+ const hd=d.querySelector('.dth');hd.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;d.style.zIndex=9650;d.classList.add('dragging');const sx=e.clientX-d.offsetLeft,sy=e.clientY-d.offsetTop;let raf=0,nx=d.offsetLeft,ny=d.offsetTop;
+  const mv=ev=>{nx=ev.clientX-sx;ny=ev.clientY-sy;if(!raf)raf=requestAnimationFrame(()=>{raf=0;dtPlace(nx,ny)})},up=()=>{if(raf){cancelAnimationFrame(raf);raf=0;dtPlace(nx,ny)}d.classList.remove('dragging');removeEventListener('pointermove',mv);removeEventListener('pointerup',up);dtSave()};addEventListener('pointermove',mv);addEventListener('pointerup',up);e.preventDefault()});
  addEventListener('resize',()=>{if(DT.open)dtPlace(d.offsetLeft,d.offsetTop)})}
 function dtPlace(x,y){const d=$('dice');x=Math.max(0,Math.min(innerWidth-d.offsetWidth,x));y=Math.max(0,Math.min(innerHeight-60,y));d.style.left=x+'px';d.style.top=y+'px';DT.pos={x,y}}
 function dtRem(f){const p=dtParse($('dt-x').value);if(!p.ok)return;const i=p.terms.findIndex(t=>t.f==f&&t.s>0);if(i<0)return;p.terms[i].n--;if(p.terms[i].n<1)p.terms.splice(i,1);$('dt-x').value=dtFmt(p);sfx('click')}

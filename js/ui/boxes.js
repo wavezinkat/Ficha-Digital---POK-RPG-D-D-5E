@@ -11,8 +11,8 @@ function mkBox(d,custom){const s=custom?d:(LAY[d.id]=LAY[d.id]||{x:d.x,y:d.y,w:d
  else d.nodes.forEach(n=>n&&by.appendChild(n));
  const ap=()=>{Object.assign(el.style,{left:s.x+'px',top:s.y+'px',width:s.w+'px',height:s.min?'':s.h+'px'});el.classList.toggle('min',!!s.min)};ap();
  bx.querySelector('.mn').onclick=()=>{s.min=s.min?0:1;ap();sfx('min');saveBoxes()};
- bx.addEventListener('pointerdown',e=>{if(MOBL())return;/* celular: caixas ficam empilhadas, sem arrastar */el.style.zIndex=++BZ;if(e.target.closest('button')||t.isContentEditable)return;sfx('box');const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop,P=el.parentNode;
-  const mv=ev=>{s.x=Math.max(0,Math.min(P.clientWidth-70,ev.clientX-sx));s.y=Math.max(0,ev.clientY-sy);el.style.left=s.x+'px';el.style.top=s.y+'px'},up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);saveBoxes()};
+ bx.addEventListener('pointerdown',e=>{if(MOBL())return;/* celular: caixas ficam empilhadas, sem arrastar */el.style.zIndex=++BZ;if(e.target.closest('button')||t.isContentEditable)return;sfx('box');el.classList.add('dragging');const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop,P=el.parentNode;let raf=0;
+  const mv=ev=>{s.x=Math.max(0,Math.min(P.clientWidth-70,ev.clientX-sx));s.y=Math.max(0,ev.clientY-sy);if(!raf)raf=requestAnimationFrame(()=>{raf=0;el.style.left=s.x+'px';el.style.top=s.y+'px'})},up=()=>{if(raf){cancelAnimationFrame(raf);raf=0}el.style.left=s.x+'px';el.style.top=s.y+'px';el.classList.remove('dragging');removeEventListener('pointermove',mv);removeEventListener('pointerup',up);saveBoxes()};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);e.preventDefault()});
  new ResizeObserver(()=>{if(!MOBL()&&!s.min&&el.offsetWidth>0&&(Math.abs(el.offsetWidth-s.w)>1||Math.abs(el.offsetHeight-s.h)>1)){s.w=el.offsetWidth;s.h=el.offsetHeight;clearTimeout(BT);BT=setTimeout(saveBoxes,400)}}).observe(el);
  return el}

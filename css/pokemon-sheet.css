@@ -1,15 +1,388 @@
-/* css/pokemon-sheet.css — Ficha compacta do Pokémon */
-/* ===== ficha do pokémon compacta ===== */
-.wc.pkw{width:min(1500px,98vw);height:94vh}.pkw .wbody{padding:12px}
-.pktop{display:grid;grid-template-columns:1.25fr 1fr 1.25fr;gap:10px;margin-bottom:10px}@media(max-width:1000px){.pktop{grid-template-columns:1fr}}
-.pks{padding:8px 10px}.idc{display:flex;gap:10px;align-items:flex-start}.artw{position:relative;flex:none}.artw .art{width:130px;height:130px;object-fit:contain;filter:drop-shadow(0 6px 10px #0008)}
-.hold{position:absolute;right:-2px;bottom:-2px;width:38px;height:38px;border-radius:12px;border:2px solid var(--gold);background:#0f2233e6;color:var(--gold);display:grid;place-items:center;padding:0}.hold:hover{background:var(--blue);color:#fff}.hold .ii{width:30px;height:30px;background:none}.hold .ii img{width:28px;height:28px;inset:1px}
-.nk{font-weight:700;font-size:15px;padding:4px 8px}.sp{margin:2px 0}.r3{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin:4px 0}.sxb{padding:2px 10px}.nat{padding:3px 6px;font-size:12.5px;margin-top:4px}
-.lvc{display:flex;gap:10px;align-items:center}.lvbig{text-align:center;min-width:64px}.lvbig small{color:#b6c7d8;font-size:11px}.lvbig b{display:block;font:30px 'Press Start 2P',cursive;color:var(--gold)}
-.mini2{display:flex;gap:10px;font-size:12.5px;color:#b6c7d8;margin:4px 0}.mini2 b{color:#fff}.pendb{display:block;margin:6px 0 0;text-align:center}
-.hpc .hpbar{height:20px}.hpin{display:flex;gap:6px;margin:6px 0}.hpin input{padding:3px 8px}.defrow{display:flex;gap:10px;align-items:center}.ac{background:#ffffff14;border-radius:10px;padding:2px 12px;text-align:center}.ac small{display:block;font-size:10px;color:#b6c7d8}.ac b{font-size:22px;color:var(--gold)}
-.stg{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.si{width:30px;height:30px;border-radius:9px;border:1px solid #ffffff2e;background:#ffffff12;color:#b6c7d8}.si.on{background:var(--red);color:#fff;border-color:var(--red)}.si:disabled{opacity:.3}.sep{width:1px;height:20px;background:#ffffff33}.stx{font-size:11.5px;margin-top:4px}
-.bigc{margin-bottom:10px;border-color:#ffffff33;background:#ffffff12}.abl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.abl select,.abl .abx{width:auto;flex:1;min-width:140px}.abd{margin:4px 0 8px}
-.mvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:6px}.mvgrid .ir{margin:0;align-items:flex-start}
-.rl{border:0;border-radius:6px;background:#ffffff22;color:#fff;font-size:11px;padding:1px 6px;margin-left:4px}.rl:hover{background:var(--blue)}
-.pkacc{display:flex;flex-direction:column;gap:5px}.pka{background:#ffffff0d;border:1px solid #ffffff1f;border-radius:12px;overflow:hidden}.pka>summary{cursor:pointer;padding:7px 12px;font-weight:600;color:var(--gold);list-style:none;user-select:none}.pka>summary::-webkit-details-marker{display:none}.pka>summary::after{content:'▸';float:right;transition:.2s}.pka[open]>summary::after{transform:rotate(90deg)}.pka>summary:hover{background:#ffffff14}.pkab{padding:8px 12px}
+/* css/pokemon-sheet.css — Ficha de sumário do Pokémon (estilo Pokémon Summary Screen) */
+.wc.pkw {
+  width: min(1500px, 98vw);
+  height: 94vh;
+}
+
+.pkw .wbody {
+  padding: 14px;
+}
+
+.pktop {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1.25fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 1000px) {
+  .pktop {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pks {
+  padding: 10px 12px;
+}
+
+.idc {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Pedestal iluminado sob a arte oficial do Pokémon */
+.artw {
+  position: relative;
+  flex: none;
+  padding: 6px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 55%, rgba(92, 200, 255, 0.18), rgba(255, 255, 255, 0.03) 72%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.artw .art {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
+  transition: transform 0.28s var(--ease-spring);
+}
+
+.artw:hover .art {
+  transform: scale(1.06) translateY(-2px);
+}
+
+.hold {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  border: 2px solid var(--gold);
+  background: rgba(13, 22, 42, 0.94);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  transition: transform 0.18s var(--ease-spring), background 0.15s, color 0.15s;
+}
+
+.hold:hover {
+  background: var(--blue);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.hold .ii {
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 0;
+}
+
+.hold .ii img {
+  width: 28px;
+  height: 28px;
+  inset: 1px;
+}
+
+.nk {
+  font-weight: 700;
+  font-size: 15.5px;
+  padding: 5px 10px;
+}
+
+.sp {
+  margin: 3px 0;
+}
+
+.r3 {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 5px 0;
+}
+
+.sxb {
+  padding: 2px 10px;
+}
+
+.nat {
+  padding: 4px 8px;
+  font-size: 12.5px;
+  margin-top: 4px;
+}
+
+.lvc {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.lvbig {
+  text-align: center;
+  min-width: 72px;
+  padding: 8px 6px;
+  border-radius: 14px;
+  background: rgba(10, 18, 34, 0.45);
+  border: 1px solid rgba(255, 212, 59, 0.24);
+}
+
+.lvbig small {
+  color: #a9bcd9;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lvbig b {
+  display: block;
+  margin-top: 3px;
+  font: 28px 'Press Start 2P', cursive;
+  color: var(--gold);
+  text-shadow: 0 2px 10px rgba(255, 212, 59, 0.3);
+}
+
+.mini2 {
+  display: flex;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #a9bcd9;
+  margin: 5px 0;
+}
+
+.mini2 b {
+  color: #fff;
+}
+
+.pendb {
+  display: block;
+  margin: 6px 0 0;
+  text-align: center;
+}
+
+/* Barra grande de PV da ficha */
+.hpc .hpbar {
+  position: relative;
+  height: 24px;
+  border-radius: 99px;
+  background: rgba(8, 14, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hpc .hpbar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 99px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  transition: width 0.35s var(--ease-out), background 0.35s;
+}
+
+.hpc .hpbar span {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+.hpin {
+  display: flex;
+  gap: 6px;
+  margin: 7px 0;
+}
+
+.hpin input {
+  padding: 4px 10px;
+}
+
+.defrow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ac {
+  background: rgba(10, 18, 34, 0.5);
+  border: 1px solid rgba(92, 200, 255, 0.25);
+  border-radius: 12px;
+  padding: 3px 14px;
+  text-align: center;
+}
+
+.ac small {
+  display: block;
+  font-size: 10px;
+  color: #9dc2eb;
+  letter-spacing: 0.05em;
+}
+
+.ac b {
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.stg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.si {
+  width: 31px;
+  height: 31px;
+  border-radius: 9px;
+  border: 1px solid rgba(180, 205, 242, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: #b6c7d8;
+  transition: transform 0.15s var(--ease-spring), background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.si:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.si.on {
+  background: linear-gradient(180deg, #ff5d68, #dc2626);
+  color: #fff;
+  border-color: #f87171;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.45);
+}
+
+.si:disabled {
+  opacity: 0.28;
+}
+
+.sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.stx {
+  font-size: 11.5px;
+  margin-top: 5px;
+}
+
+.bigc {
+  margin-bottom: 12px;
+  border-color: rgba(180, 205, 242, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+}
+
+.abl {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.abl select,
+.abl .abx {
+  width: auto;
+  flex: 1;
+  min-width: 140px;
+}
+
+.abd {
+  margin: 5px 0 10px;
+}
+
+.mvgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+  gap: 8px;
+}
+
+.mvgrid .ir {
+  margin: 0;
+  align-items: flex-start;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.rl {
+  border: 0;
+  border-radius: 99px;
+  background: rgba(59, 130, 246, 0.28);
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  margin-left: 4px;
+  transition: background 0.15s, transform 0.15s var(--ease-spring);
+}
+
+.rl:hover {
+  background: var(--blue);
+  transform: translateY(-1px);
+}
+
+/* Acordeões suaves */
+.pkacc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pka {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(180, 205, 242, 0.16);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.pka[open] {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(180, 205, 242, 0.28);
+}
+
+.pka > summary {
+  cursor: pointer;
+  padding: 9px 14px;
+  font-weight: 700;
+  color: var(--gold);
+  list-style: none;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.pka > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pka > summary::after {
+  content: '▸';
+  float: right;
+  transition: transform 0.22s var(--ease-out);
+}
+
+.pka[open] > summary::after {
+  transform: rotate(90deg);
+}
+
+.pka > summary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pkab {
+  padding: 10px 14px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}

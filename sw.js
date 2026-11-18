@@ -2,7 +2,7 @@
    - App shell (HTML/CSS/JS/ícones/wallpapers): guardado na instalação.
    - Músicas, fontes, Font Awesome e sprites externos: guardados conforme são usados (cache em tempo de execução).
    Ao alterar qualquer arquivo do site, aumente VERSION para os celulares baixarem a versão nova. */
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL = "pokerpg-shell-" + VERSION;
 const RUNTIME = "pokerpg-runtime-" + VERSION;
 const CORE = [

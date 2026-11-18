@@ -1,14 +1,225 @@
-/* css/master.css — Modo Mestre */
-/* ===== modo mestre ===== */
-.big.gm{background:linear-gradient(135deg,#7b3ff2,#e5383b);box-shadow:0 0 0 1px #ffffff33}
-#mname{pointer-events:none;background:#ffcb0526;border:1px solid var(--gold);color:var(--gold);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600}
-#lrail{position:fixed;left:10px;top:60px;z-index:9000;display:flex;flex-direction:column;gap:6px;background:#0f2233d9;backdrop-filter:blur(8px);padding:6px;border-radius:18px;border:1px solid #ffffff26}
-#lrail button{position:relative;width:38px;height:38px;border-radius:12px;border:0;background:transparent;color:#cfe0f1;font-size:15px}#lrail button:hover{background:#ffffff1f;color:#fff}#lrail button.on{background:var(--gold);color:#111}
-#lrail button:hover::after{content:attr(data-t);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:#000d;color:#fff;padding:3px 9px;border-radius:6px;font-size:12px;white-space:nowrap;pointer-events:none}
-#drawer{position:fixed;left:62px;top:60px;bottom:14px;width:380px;z-index:9100;display:flex;flex-direction:column;background:rgba(12,28,44,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid #ffffff2e;border-radius:16px;box-shadow:0 12px 40px #0008;color:var(--tx)}
-#drawer header{display:flex;align-items:center;padding:8px 12px;background:#ffffff12;border-radius:16px 16px 0 0}#drawer header b{flex:1;color:var(--gold)}#drawer header button{border:0;width:24px;height:24px;border-radius:7px;background:#ffffff1a;color:#fff}#drawer header button:hover{background:var(--red)}
-#dr-b{flex:1;overflow:auto;padding:10px}
-body.mdrawer .win{left:452px}
-.tcard{display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:8px;border-radius:12px;background:#ffffff0f;border:2px solid #ffffff1f;cursor:pointer;transition:.15s}.tcard:hover{background:#ffffff1f}.tcard.on{border-color:var(--gold);background:#ffcb0518}
-.tav{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);background:#fff;flex:none}.tav.sm{width:36px;height:36px}.tinfo{flex:1;min-width:0}.tinfo small{display:block;color:#b6c7d8;font-size:11.5px}.tpk{display:flex;flex-wrap:wrap;gap:0;margin-top:3px}.tpk .ps.sm{width:34px;height:34px}
-.ck{display:block;font-size:12.5px;margin:3px 0}.pc.wild{border-color:#7b3ff2aa}.pc.wild .pa{align-items:flex-end}.whp{width:58px;padding:2px 6px;font-size:12px}.pklist.wl{grid-template-columns:1fr}
+/* css/master.css — Modo Mestre (GM) */
+.big.gm {
+  background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 48%, #ef4444 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 22px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.big.gm:hover:not(:disabled) {
+  box-shadow: 0 10px 28px rgba(139, 92, 246, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+#mname {
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  padding: 5px 13px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#lrail {
+  position: fixed;
+  left: 10px;
+  top: 60px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(15, 25, 48, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 7px;
+  border-radius: 18px;
+  border: 1px solid rgba(190, 214, 248, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+}
+
+#lrail button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 0;
+  background: transparent;
+  color: #c8d7ee;
+  font-size: 15px;
+  transition: background 0.16s var(--ease-out), color 0.16s, transform 0.16s var(--ease-spring);
+}
+
+#lrail button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: scale(1.06);
+}
+
+#lrail button.on {
+  background: linear-gradient(180deg, #ffe066, #f5b400);
+  color: #141e33;
+  box-shadow: 0 3px 10px rgba(245, 180, 0, 0.35);
+}
+
+#lrail button:hover::after {
+  content: attr(data-t);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 17, 32, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#drawer {
+  position: fixed;
+  left: 64px;
+  top: 60px;
+  bottom: 14px;
+  width: 380px;
+  z-index: 9100;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(170deg, rgba(17, 28, 52, 0.94), rgba(11, 19, 36, 0.96));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(190, 214, 248, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
+  color: var(--tx);
+}
+
+#drawer:not(.hide) {
+  animation: winEnter 0.22s var(--ease-out);
+}
+
+#drawer header {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px 20px 0 0;
+}
+
+#drawer header b {
+  flex: 1;
+  color: var(--gold);
+  font-size: 14px;
+}
+
+#drawer header button {
+  border: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transition: background 0.15s;
+}
+
+#drawer header button:hover {
+  background: var(--red);
+}
+
+#dr-b {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+}
+
+body.mdrawer .win {
+  left: 454px;
+}
+
+/* Cartões de treinador na gaveta do Mestre */
+#drawer .tcard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px !important;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(180, 205, 242, 0.16);
+  cursor: pointer;
+  transition: background 0.16s, border-color 0.16s, transform 0.16s var(--ease-out);
+}
+
+#drawer .tcard:hover {
+  background: rgba(255, 255, 255, 0.11);
+  transform: translateY(-1px);
+}
+
+#drawer .tcard.on {
+  border-color: var(--gold);
+  background: linear-gradient(90deg, rgba(255, 212, 59, 0.16), rgba(255, 212, 59, 0.04));
+}
+
+.tav {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  background: #1a2744;
+  flex: none;
+}
+
+.tav.sm {
+  width: 36px;
+  height: 36px;
+}
+
+.tinfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.tinfo small {
+  display: block;
+  color: #a9bcd9;
+  font-size: 11.5px;
+}
+
+.tpk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  margin-top: 3px;
+}
+
+.tpk .ps.sm {
+  width: 34px;
+  height: 34px;
+}
+
+.ck {
+  display: block;
+  font-size: 12.5px;
+  margin: 3px 0;
+}
+
+.pc.wild {
+  border-color: rgba(157, 101, 255, 0.55);
+}
+
+.pc.wild .pa {
+  align-items: flex-end;
+}
+
+.whp {
+  width: 58px;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.pklist.wl {
+  grid-template-columns: 1fr;
+}

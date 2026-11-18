@@ -1,6 +1,69 @@
-/* css/party.css — Party, PC e nível do treinador */
-/* ===== party / pc / nível do treinador ===== */
-#tlup{pointer-events:auto;width:26px;height:26px;border:0;border-radius:8px;background:var(--red);color:#fff;font-size:12px}#tlup:hover{filter:brightness(1.2)}
-.pkzone{min-height:76px;border-radius:12px;transition:.15s}.pkzone.over{background:#ffcb0526;outline:2px dashed var(--gold)}
-.pkmini{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin-top:8px}
-.pc.mini{padding:5px 8px;gap:8px}.pc.mini .ps{width:46px;height:46px}.pc.mini .pa{flex-direction:row}.pc.mini .pa button{width:22px;height:22px;font-size:10px}.pc .ps{cursor:grab}
+/* css/party.css — Party, PC Box e botão de subir nível do treinador */
+#tlup {
+  pointer-events: auto;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--mint);
+  color: #092c1e;
+  font-size: 12px;
+  display: inline-grid;
+  place-items: center;
+  transition: transform 0.18s var(--ease-spring), filter 0.16s, box-shadow 0.16s;
+}
+
+#tlup:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px) scale(1.06);
+  box-shadow: 0 4px 12px rgba(52, 211, 153, 0.4);
+}
+
+.pkzone {
+  min-height: 80px;
+  border-radius: 14px;
+  padding: 2px;
+  transition: background 0.18s var(--ease-out), outline-color 0.18s var(--ease-out);
+}
+
+.pkzone.over {
+  background: rgba(255, 212, 59, 0.12);
+  outline: 2px dashed var(--gold);
+  outline-offset: 4px;
+}
+
+.pkmini {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pc.mini {
+  padding: 6px 10px;
+  gap: 8px;
+  border-radius: 13px;
+}
+
+.pc.mini .ps {
+  width: 46px;
+  height: 46px;
+}
+
+.pc.mini .pa {
+  flex-direction: row;
+}
+
+.pc.mini .pa button {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+}
+
+.pc .ps {
+  cursor: grab;
+}
+
+.pc .ps:active {
+  cursor: grabbing;
+}
